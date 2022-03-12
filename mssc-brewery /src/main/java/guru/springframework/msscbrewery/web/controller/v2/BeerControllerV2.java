@@ -1,7 +1,7 @@
-package guru.springframework.msscbrewery.web.controller;
+package guru.springframework.msscbrewery.web.controller.v2;
 
-import guru.springframework.msscbrewery.services.BeerService;
-import guru.springframework.msscbrewery.web.model.BeerDto;
+import guru.springframework.msscbrewery.services.v2.BeerServiceV2;
+import guru.springframework.msscbrewery.web.model.v2.BeerDtoV2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,34 +9,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Deprecated
 @RequestMapping("/api/v1/beer")
-@RestController//@Controller + @ResponseBody
-//Axis TCP Monitor plugin
-public class BeerController {
+@RestController
+public class BeerControllerV2 {
 
-    private final BeerService beerService;
+    private final BeerServiceV2 beerServiceV2;
 
 
-    public BeerController(BeerService beerService) {
-        this.beerService = beerService;
+    public BeerControllerV2(BeerServiceV2 beerServiceV2) {
+        this.beerServiceV2 = beerServiceV2;
     }
 
     @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId) {
+    public ResponseEntity<BeerDtoV2> getBeer(@PathVariable("beerId") UUID beerId) {
 
-        BeerDto beer = beerService.getBeerById(beerId);
+        BeerDtoV2 beer = beerServiceV2.getBeerById(beerId);
 
-        ResponseEntity<BeerDto> responseToReturn = new ResponseEntity<>(beer, HttpStatus.OK);
+        ResponseEntity<BeerDtoV2> responseToReturn = new ResponseEntity<>(beer, HttpStatus.OK);
 
         return responseToReturn;
     }
 
 
-    @PostMapping //POST - create new beer
-    public ResponseEntity handlePost(@RequestBody BeerDto beerDto){
 
-        BeerDto savedDto = beerService.saveNewBeer(beerDto);
+    @PostMapping //POST - create new beer
+    public ResponseEntity handlePost(@RequestBody BeerDtoV2 beerDtoV2){
+
+        BeerDtoV2 savedDto = beerServiceV2.saveNewBeer(beerDtoV2);
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -54,9 +53,9 @@ public class BeerController {
     }
 
     @PutMapping({"/{beerId}"})
-    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID bearId, @RequestBody BeerDto beerDto){
+    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID bearId, @RequestBody BeerDtoV2 beerDtoV2){
 
-        beerService.updateBeer(bearId, beerDto);
+        beerServiceV2.updateBeer(bearId, beerDtoV2);
 
         ResponseEntity responseTorReturn = new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
@@ -66,6 +65,6 @@ public class BeerController {
     @DeleteMapping({"/{beerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBeer(@PathVariable("beerId") UUID beerId){
-        beerService.deleteBeerById(beerId);
+        beerServiceV2.deleteBeerById(beerId);
     }
 }
