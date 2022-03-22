@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 //ctrl+,  ✓ Enable annotation processing
-//ctrl+,
+//ctrl+, plugin
 public class BeerDto {
 
     @Null
